@@ -1,6 +1,7 @@
 import Brand from "@/components/brand/Brand";
 import ContactUs from "@/components/ContactUs";
 import Coverage from "@/components/Coverage";
+import Disclaimer from "@/components/Disclaimer";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
@@ -18,6 +19,7 @@ export default function Home() {
     <WhyChooseFixMaster />
     <Coverage />  
     <ContactUs />
+    <Disclaimer />
     <Footer />
     <WhatsappButton />
     </>

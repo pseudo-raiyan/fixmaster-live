@@ -7,7 +7,7 @@ import {
   Clock3,
   ShieldCheck,
   Star,
-  MessageCircleMore,
+  Phone,
   BadgeCheck,
 } from "lucide-react";
 
@@ -18,12 +18,7 @@ const stats = [
 ];
 
 export default function Hero() {
-  // Configured WhatsApp parameters for FixMaster support line
-  const whatsappNumber = "918686509563";
-  const defaultMessage = encodeURIComponent(
-    "Hi FixMaster, I'm visiting your website and would like to inquire about a mobile repair."
-  );
-  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${defaultMessage}`;
+  const supportPhoneNumber = "tel:+918686509563";
 
   return (
     <section className="relative overflow-hidden bg-white">
@@ -68,15 +63,13 @@ export default function Hero() {
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
 
-            <Link
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+            <a
+              href={supportPhoneNumber}
               className="inline-flex items-center justify-center rounded-2xl border border-purple-200 bg-white px-8 py-4 text-base font-semibold text-gray-800 shadow-sm transition-all duration-300 hover:border-purple-300 hover:bg-purple-50"
             >
-              <MessageCircleMore className="mr-2 h-5 w-5 text-purple-600" />
-              Chat on WhatsApp
-            </Link>
+              <Phone className="mr-2 h-5 w-5 text-purple-600" />
+              Call Now
+            </a>
           </div>
 
           {/* Stats */}

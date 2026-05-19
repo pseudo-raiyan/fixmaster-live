@@ -73,9 +73,21 @@ const Footer = () => {
             </h3>
             <div className="flex items-center gap-3">
               {[
-                { icon: FaFacebookF, href: "#", label: "Facebook" },
-                { icon: FaInstagram, href: "#", label: "Instagram" },
-                { icon: FaYoutube, href: "#", label: "YouTube" }
+                { 
+                  icon: FaFacebookF, 
+                  href: "https://www.facebook.com/profile.php?id=61590140452178", 
+                  label: "Facebook" 
+                },
+                { 
+                  icon: FaInstagram, 
+                  href: "https://www.instagram.com/fixmastermobiles/", 
+                  label: "Instagram" 
+                },
+                { 
+                  icon: FaYoutube, 
+                  href: "https://www.youtube.com/channel/UCXPQ5ezC14E-6mwIZ0Xn04Q", 
+                  label: "YouTube" 
+                }
               ].map((social, idx) => {
                 const Icon = social.icon;
                 return (
@@ -83,6 +95,8 @@ const Footer = () => {
                     key={idx}
                     href={social.href}
                     aria-label={social.label}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="flex h-9 w-9 items-center justify-center rounded-full bg-white/5 text-purple-100/80 border border-white/5 transition-all duration-300 hover:bg-white/15 hover:text-white hover:scale-105"
                   >
                     <Icon className="text-sm" />

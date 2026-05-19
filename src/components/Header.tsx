@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { Menu, X, ChevronRight } from "lucide-react";
+import { Menu, X, ChevronRight, Phone } from "lucide-react";
 
 /* =========================
    NAVIGATION ROUTES
@@ -18,9 +18,7 @@ const navItems = [
 /* =========================
    CTA REDIRECTS
 ========================= */
-// Updated to redirect book buttons directly to /contact
-const BOOK_REPAIR_LINK = "/contact"; 
-const WHATSAPP_LINK = "https://wa.me/918686509563"; 
+const CALL_PHONE_LINK = "tel:+918686509563"; 
 
 export default function Header() {
   const [open, setOpen] = useState(false);
@@ -72,7 +70,7 @@ export default function Header() {
       >
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:h-24 lg:px-8">
           
-          {/* LOGO REDIRECT */}
+          {/* LOGO REDIRECT TO / */}
           <Link href="/" aria-label="Homepage" className="shrink-0">
             <Image
               src="/logo.png"
@@ -89,14 +87,15 @@ export default function Header() {
             {navLinks()}
           </nav>
 
-          {/* BOOK REPAIR BUTTON */}
+          {/* DESKTOP CALL NOW BUTTON */}
           <div className="hidden lg:block">
-            <Link
-              href={BOOK_REPAIR_LINK}
-              className="rounded-2xl bg-gradient-to-r from-purple-500 to-violet-600 px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:-translate-y-0.5 hover:shadow-xl"
+            <a
+              href={CALL_PHONE_LINK}
+              className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-purple-500 to-violet-600 px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:-translate-y-0.5 hover:shadow-xl"
             >
-              Book Repair
-            </Link>
+              <Phone className="h-4 w-4" />
+              Call Now
+            </a>
           </div>
 
           {/* Mobile Menu Button */}
@@ -125,7 +124,7 @@ export default function Header() {
           {/* Mobile Header */}
           <div className="flex items-center justify-between border-b border-gray-100 px-5 py-5">
             
-            {/* Logo Redirect */}
+            {/* Logo Redirect to / */}
             <Link href="/" onClick={() => setOpen(false)}>
               <Image
                 src="/logo.png"
@@ -161,15 +160,16 @@ export default function Header() {
             </div>
           </nav>
 
-          {/* MOBILE CTA BUTTON */}
+          {/* MOBILE CALL NOW BUTTON */}
           <div className="border-t border-gray-100 p-5">
-            <Link
-              href={BOOK_REPAIR_LINK}
+            <a
+              href={CALL_PHONE_LINK}
               onClick={() => setOpen(false)}
-              className="flex w-full items-center justify-center rounded-2xl bg-gradient-to-r from-purple-500 to-violet-600 px-5 py-3.5 text-sm font-semibold text-white shadow-lg transition hover:opacity-95"
+              className="flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-purple-500 to-violet-600 px-5 py-3.5 text-sm font-semibold text-white shadow-lg transition hover:opacity-95"
             >
-              Book Your Repair
-            </Link>
+              <Phone className="h-4 w-4" />
+              Call Now
+            </a>
           </div>
         </aside>
       </div>

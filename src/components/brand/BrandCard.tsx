@@ -38,7 +38,7 @@ const BrandCard = ({
           ${
             active
               ? "bg-purple-50"
-              : "bg-gray-50 group-hover:bg-purple-50"
+              : "bg-purple-100 group-hover:bg-purple-200"
           }`}
         >
           <Image

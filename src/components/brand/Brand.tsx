@@ -1,3 +1,5 @@
+// Brand.tsx
+
 "use client";
 
 import {
@@ -7,7 +9,7 @@ import {
   useState,
 } from "react";
 
-import { FaCheck } from "react-icons/fa6";
+import { usePathname, useRouter } from "next/navigation";
 
 import { MOBILE_DATA } from "@/data/mobileData";
 
@@ -16,106 +18,140 @@ import ModelSection from "./ModelSection";
 import BookingModal from "./BookingModal";
 
 const Brand = () => {
+  // NEXT NAVIGATION
+  const router = useRouter();
+  const pathname = usePathname();
+
   // STATES
-  const [selectedBrand, setSelectedBrand] = useState("");
-  const [selectedModel, setSelectedModel] = useState("");
-  const [showBookingModal, setShowBookingModal] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [showSuccess, setShowSuccess] = useState(false);
+  const [selectedBrand, setSelectedBrand] =
+    useState("");
 
-  const step2Ref = useRef<HTMLDivElement | null>(null);
+  const [selectedModel, setSelectedModel] =
+    useState("");
 
-  const [formData, setFormData] = useState({
-    customerName: "",
-    mobileNumber: "",
-    emailAddress: "",
-  });
+  const [showBookingModal, setShowBookingModal] =
+    useState(false);
+
+  const [searchQuery, setSearchQuery] =
+    useState("");
+
+  const step2Ref =
+    useRef<HTMLDivElement | null>(null);
+
+  // FORM DATA
+  const [formData, setFormData] =
+    useState({
+      customerName: "",
+      mobileNumber: "",
+      emailAddress: "",
+    });
 
   // SELECTED BRAND DATA
   const selectedBrandData = useMemo(() => {
-    return MOBILE_DATA.find((item) => item.name === selectedBrand);
+    return MOBILE_DATA.find(
+      (item) => item.name === selectedBrand
+    );
   }, [selectedBrand]);
 
   // FILTERED MODELS
   const filteredModels = useMemo(() => {
-    if (!selectedBrandData?.models) return [];
+    if (!selectedBrandData?.models)
+      return [];
 
-    return selectedBrandData.models.filter((model) =>
-      model.toLowerCase().includes(searchQuery.toLowerCase())
+    return selectedBrandData.models.filter(
+      (model) =>
+        model
+          .toLowerCase()
+          .includes(
+            searchQuery.toLowerCase()
+          )
     );
-  }, [selectedBrandData, searchQuery]);
+  }, [
+    selectedBrandData,
+    searchQuery,
+  ]);
 
   // AUTO SCROLL
   useEffect(() => {
-    if (selectedBrand && step2Ref.current) {
+    if (
+      selectedBrand &&
+      step2Ref.current
+    ) {
       setTimeout(() => {
-        step2Ref.current?.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
+        step2Ref.current?.scrollIntoView(
+          {
+            behavior: "smooth",
+            block: "start",
+          }
+        );
       }, 250);
     }
   }, [selectedBrand]);
 
   // BRAND SELECT
-  const handleBrandSelect = (brand: string) => {
-    // Intercept "Any other" to scroll to Contact Us
+  const handleBrandSelect = (
+    brand: string
+  ) => {
+    /*
+    ============================================
+    ANY OTHER BRAND
+    ============================================
+    */
+
     if (brand === "Any other") {
-      const contactSection = document.getElementById("contact-us");
-      if (contactSection) {
-        contactSection.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
+      // IF USER IS ON HOMEPAGE
+      if (pathname === "/") {
+        const contactSection =
+          document.getElementById(
+            "contact-us"
+          );
+
+        if (contactSection) {
+          contactSection.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }
       }
-      // Reset selections so Step 2 doesn't open
+
+      // IF USER IS ON OTHER PAGE
+      else {
+        router.push("/contact");
+      }
+
+      // RESET
       setSelectedBrand("");
       setSelectedModel("");
       setSearchQuery("");
-      return; // Exit early
+
+      return;
     }
 
-    // Standard behavior for all other brands
+    /*
+    ============================================
+    NORMAL FLOW
+    ============================================
+    */
+
     setSelectedBrand(brand);
     setSelectedModel("");
     setSearchQuery("");
   };
 
   // MODEL SELECT
-  const handleModelSelect = (model: string) => {
+  const handleModelSelect = (
+    model: string
+  ) => {
     setSelectedModel(model);
+
     setShowBookingModal(true);
   };
 
   // CLOSE MODAL
   const handleCloseModal = () => {
     setShowBookingModal(false);
-  };
 
-  // SUBMIT
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const payload = {
-      brand: selectedBrand,
-      model: selectedModel,
-      ...formData,
-    };
-
-    console.log(payload);
-
-    // CLOSE MODAL
-    setShowBookingModal(false);
-
-    // SHOW SUCCESS
-    setShowSuccess(true);
-
-    // HIDE AFTER 3 SEC
-    setTimeout(() => {
-      setShowSuccess(false);
-    }, 3000);
-
-    // RESET
+    // RESET FORM
     setFormData({
       customerName: "",
       mobileNumber: "",
@@ -125,30 +161,14 @@ const Brand = () => {
 
   return (
     <>
-      {/* SUCCESS TOAST */}
-      {showSuccess && (
-        <div className="fixed inset-x-0 top-4 z-[100] flex justify-center px-4 sm:top-6">
-          <div className="animate-in slide-in-from-top-3 fade-in duration-300">
-            <div className="flex w-full max-w-[92vw] items-center gap-3 rounded-xl border border-green-200 bg-green-50 px-4 py-3 shadow-lg sm:max-w-md sm:px-5">
-              {/* ICON */}
-              <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-600">
-                <FaCheck className="text-[10px] text-white" />
-              </div>
-
-              {/* TEXT */}
-              <p className="text-xs font-medium leading-relaxed text-green-800 sm:text-sm">
-                Repair request received! We’ll contact you shortly.
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* MAIN SECTION */}
       <section className="w-full bg-[#f7f8fc] px-4 py-10 sm:py-14">
+
         <div className="mx-auto max-w-7xl">
+
           {/* HEADER */}
-          <div className="mb-10 text-center">
+          <div className="mb-10 text-center sm:mb-14">
+
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.25em] text-purple-600 sm:text-sm">
               Instant Repair Booking
             </p>
@@ -158,16 +178,22 @@ const Brand = () => {
             </h1>
 
             <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-gray-500 sm:text-base">
-              Choose your mobile brand and model to instantly book your repair.
+              Choose your mobile brand and
+              model to instantly book your
+              repair.
             </p>
           </div>
 
           {/* STEP 1 */}
-          <div className="rounded-[32px] border border-gray-100 bg-white p-5 shadow-sm sm:p-7">
+          <div className="rounded-[24px] sm:rounded-[32px] border border-gray-100 bg-white p-4 shadow-sm sm:p-7">
+
             {/* STEP TITLE */}
             <div className="mb-7">
+
               <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-purple-50 px-4 py-2">
+
                 <div className="h-2 w-2 rounded-full bg-purple-600" />
+
                 <span className="text-[11px] font-semibold uppercase tracking-wider text-purple-700 sm:text-xs">
                   Step 1
                 </span>
@@ -178,28 +204,48 @@ const Brand = () => {
               </h2>
 
               <p className="mt-2 text-sm text-gray-500 sm:text-base">
-                Choose your mobile brand to continue.
+                Choose your mobile brand to
+                continue.
               </p>
             </div>
 
             {/* BRAND GRID */}
             <BrandGrid
               brands={MOBILE_DATA}
-              selectedBrand={selectedBrand}
-              onSelect={handleBrandSelect}
+              selectedBrand={
+                selectedBrand
+              }
+              onSelect={
+                handleBrandSelect
+              }
             />
           </div>
 
           {/* STEP 2 */}
           {selectedBrand && (
-            <div ref={step2Ref}>
+            <div
+              ref={step2Ref}
+              className="mt-8"
+            >
               <ModelSection
-                selectedBrand={selectedBrand}
-                selectedModel={selectedModel}
-                searchQuery={searchQuery}
-                setSearchQuery={setSearchQuery}
-                models={filteredModels}
-                onModelSelect={handleModelSelect}
+                selectedBrand={
+                  selectedBrand
+                }
+                selectedModel={
+                  selectedModel
+                }
+                searchQuery={
+                  searchQuery
+                }
+                setSearchQuery={
+                  setSearchQuery
+                }
+                models={
+                  filteredModels
+                }
+                onModelSelect={
+                  handleModelSelect
+                }
                 onChangeBrand={() => {
                   setSelectedBrand("");
                   setSelectedModel("");
@@ -211,15 +257,22 @@ const Brand = () => {
         </div>
       </section>
 
-      {/* MODAL */}
+      {/* BOOKING MODAL */}
       {showBookingModal && (
         <BookingModal
-          selectedBrand={selectedBrand}
-          selectedModel={selectedModel}
+          selectedBrand={
+            selectedBrand
+          }
+          selectedModel={
+            selectedModel
+          }
           formData={formData}
-          setFormData={setFormData}
-          onClose={handleCloseModal}
-          onSubmit={handleSubmit}
+          setFormData={
+            setFormData
+          }
+          onClose={
+            handleCloseModal
+          }
         />
       )}
     </>
